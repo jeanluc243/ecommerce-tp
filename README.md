@@ -27,13 +27,22 @@ Le projet est configuré pour un seul deploy Vercel avec :
 - le frontend servi depuis `dist`
 - l'API Express exposée via `api/index.js`
 - le même domaine pour le front et le back via `/api/*`
+- une seule variable critique côté serveur : `DATABASE_URL`
 
 ### Étapes
 
 1. Pousser le projet sur GitHub.
 2. Importer le repo dans Vercel.
-3. Ajouter la variable d'environnement `DATABASE_URL` dans le projet Vercel.
-4. Déployer.
+3. Dans `Settings > Environment Variables`, ajouter `DATABASE_URL`.
+4. Ne pas renseigner `VITE_API_URL` en production si tu veux garder les appels en relatif sur `/api`.
+5. Déployer.
+6. Appliquer les migrations Prisma sur la base PostgreSQL avant le premier usage réel.
+
+### Important pour `.env`
+
+- Le fichier `.env` local ne part pas automatiquement sur Vercel.
+- Sur Vercel, il faut recopier les variables dans l'interface du projet.
+- Ne commit pas `.env` dans le repo.
 
 ### Variables d'environnement
 
@@ -49,6 +58,12 @@ npx prisma migrate deploy
 ```
 
 Tu peux le faire depuis ton poste avec la même `DATABASE_URL`, ou via un job CI/CD.
+
+Exemple depuis ton poste :
+
+```bash
+DATABASE_URL="..." npx prisma migrate deploy
+```
 
 ## Important
 

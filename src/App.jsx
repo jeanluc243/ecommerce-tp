@@ -1,24 +1,24 @@
-import { useEffect, useState } from 'react'
-import { getProducts } from './services/api'
+import { Route, Routes } from 'react-router-dom'
+import { CheckoutPage } from '@/pages/checkout-page'
+import { AdminPage } from '@/pages/admin-page'
+import { BrandsPage } from '@/pages/brands-page'
+import { CategoriesPage } from '@/pages/categories-page'
+import { ProductDetailPage } from '@/pages/product-detail-page'
+import { ProductsPage } from '@/pages/products-page'
+import { StoreHomePage } from '@/pages/store-home-page'
 
 function App() {
-  const [products, setProducts] = useState([])
-
-  useEffect(() => {
-    getProducts().then(setProducts).catch(console.error)
-  }, [])
-
   return (
-    <div>
-      <h1>Mon e-commerce</h1>
-      {products.map((product) => (
-        <div key={product.id}>
-          <h2>{product.name}</h2>
-          <p>{product.description}</p>
-          <strong>{product.price} $</strong>
-        </div>
-      ))}
-    </div>
+    <Routes>
+      <Route path="/" element={<StoreHomePage />} />
+      <Route path="/store" element={<StoreHomePage />} />
+      <Route path="/products" element={<ProductsPage />} />
+      <Route path="/products/:id" element={<ProductDetailPage />} />
+      <Route path="/categories" element={<CategoriesPage />} />
+      <Route path="/brands" element={<BrandsPage />} />
+      <Route path="/checkout" element={<CheckoutPage />} />
+      <Route path="/admin" element={<AdminPage />} />
+    </Routes>
   )
 }
 

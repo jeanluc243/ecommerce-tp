@@ -1,6 +1,8 @@
 import cors from 'cors'
 import express from 'express'
-import prisma from './db/prisma.js'
+import adminAuthRoutes from './routes/adminAuthRoutes.js'
+import orderRoutes from './routes/orderRoutes.js'
+import productRoutes from './routes/productRoutes.js'
 
 const app = express()
 
@@ -11,29 +13,9 @@ app.get('/api/health', (req, res) => {
   res.json({ message: 'API OK' })
 })
 
-app.get('/api/products', async (req, res) => {
-  const products = await prisma.product.findMany({
-    orderBy: { createdAt: 'desc' }
-  })
-
-  res.json(products)
-})
-
-app.post('/api/products', async (req, res) => {
-  const { name, description, price, imageUrl, stock } = req.body
-
-  const product = await prisma.product.create({
-    data: {
-      name,
-      description,
-      price: Number(price),
-      imageUrl,
-      stock: Number(stock ?? 0)
-    }
-  })
-
-  res.status(201).json(product)
-})
+app.use('/api', adminAuthRoutes)
+app.use('/api', productRoutes)
+app.use('/api', orderRoutes)
 
 // eslint-disable-next-line no-unused-vars
 app.use((error, req, res, next) => {
