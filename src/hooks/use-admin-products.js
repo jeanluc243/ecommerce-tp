@@ -22,6 +22,7 @@ export function useAdminProducts(enabled = true) {
     }
 
     let active = true
+    setIsLoading(true)
 
     async function loadProducts() {
       try {

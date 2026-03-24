@@ -1,4 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
+import { getPrimaryProductImage } from '@/lib/product-media'
+
 export const placeholderGradients = [
   'from-zinc-800 via-zinc-700 to-zinc-900',
   'from-stone-200 via-zinc-100 to-stone-300',
@@ -15,11 +17,13 @@ export function formatPrice(price) {
   }).format(price)
 }
 
-export function ProductVisual({ imageUrl, title, index, className = 'h-72' }) {
-  if (imageUrl) {
+export function ProductVisual({ product, imageUrl, title, index, className = 'h-72' }) {
+  const primaryImage = product ? getPrimaryProductImage(product) : imageUrl
+
+  if (primaryImage) {
     return (
       <img
-        src={imageUrl}
+        src={primaryImage}
         alt={title}
         className={`${className} w-full object-cover`}
       />

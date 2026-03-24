@@ -3,6 +3,8 @@ export function presentOrder(order) {
     id: order.id,
     customerPhone: order.customerPhone,
     totalAmount: Number(order.totalAmount),
+    status: order.status ?? 'PENDING',
+    validatedAt: order.validatedAt,
     createdAt: order.createdAt,
     items: order.items.map((item) => ({
       id: item.id,

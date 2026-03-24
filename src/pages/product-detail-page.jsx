@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { useCart } from '@/context/cart-context'
+import { normalizeProductMedia } from '@/lib/product-media'
 import { getProduct } from '@/services/api'
 
 export function ProductDetailPage() {
@@ -15,6 +16,7 @@ export function ProductDetailPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
   const [quantity, setQuantity] = useState(1)
+  const [selectedMediaIndex, setSelectedMediaIndex] = useState(0)
   const { addItem } = useCart()
 
   useEffect(() => {
@@ -25,6 +27,7 @@ export function ProductDetailPage() {
         const data = await getProduct(id)
         if (!active) return
         setProduct(data)
+        setSelectedMediaIndex(0)
       } catch (loadError) {
         if (!active) return
         setError(loadError.message)
@@ -51,6 +54,12 @@ export function ProductDetailPage() {
     return <div className="p-10 text-zinc-600">Product not found.</div>
   }
 
+  const media = normalizeProductMedia(product)
+  const selectedMedia = media[selectedMediaIndex]
+  const selectedProductView = selectedMedia
+    ? { ...product, media: [selectedMedia] }
+    : product
+
   return (
     <div className="min-h-screen bg-zinc-50 px-6 py-10 lg:px-10">
       <div className="mx-auto max-w-6xl space-y-6">
@@ -60,7 +69,29 @@ export function ProductDetailPage() {
         </Link>
         <Card className="overflow-hidden rounded-[2rem]">
           <div className="grid lg:grid-cols-[1.1fr_0.9fr]">
-            <ProductVisual imageUrl={product.imageUrl} title={product.name} index={0} className="h-[28rem] lg:h-full" />
+            <div className="space-y-4 p-4 lg:p-0">
+              <ProductVisual product={selectedProductView} title={product.name} index={0} className="h-[28rem] rounded-[1.6rem] lg:h-full lg:rounded-none" />
+              {media.length > 1 ? (
+                <div className="grid grid-cols-4 gap-3 px-1 pb-1 lg:px-4 lg:pb-4">
+                  {media.map((item, itemIndex) => (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => setSelectedMediaIndex(itemIndex)}
+                      className={`overflow-hidden rounded-2xl border ${
+                        itemIndex === selectedMediaIndex ? 'border-zinc-950' : 'border-zinc-200'
+                      }`}
+                    >
+                      <img
+                        src={item.src}
+                        alt={item.name}
+                        className="h-20 w-full object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+              ) : null}
+            </div>
             <CardContent className="flex flex-col justify-between p-8">
               <div className="space-y-5">
                 <Badge variant="outline" className="rounded-md px-2 py-1 text-[11px] font-semibold">

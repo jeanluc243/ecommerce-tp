@@ -1,17 +1,37 @@
-import { LogOut, Search, ShoppingBag, MoonStar, PanelTopOpen } from 'lucide-react'
+import {
+  Layers3,
+  LogOut,
+  MessageSquareText,
+  MoonStar,
+  Package2,
+  Search,
+  Shapes,
+  ShoppingBag,
+} from 'lucide-react'
 import { useDeferredValue, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AdminLoginForm } from '@/components/admin/admin-login-form'
+import { OrdersPanel } from '@/components/admin/orders-panel'
 import { ProductCard } from '@/components/admin/product-card'
 import { ProductForm } from '@/components/admin/product-form'
+import { TaxonomyManager } from '@/components/admin/taxonomy-manager'
 import { StoreNav } from '@/components/store/store-nav'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
 import { Input } from '@/components/ui/input'
+import { Separator } from '@/components/ui/separator'
+import { useAdminOrders } from '@/hooks/use-admin-orders'
 import { useAdminProducts } from '@/hooks/use-admin-products'
+import { useAdminTaxonomy } from '@/hooks/use-admin-taxonomy'
 import { clearAdminToken, hasAdminToken, setAdminToken } from '@/lib/admin-auth'
 import { loginAdmin } from '@/services/api'
+
+const adminTabs = [
+  { id: 'products', label: 'Products', icon: Package2 },
+  { id: 'categories', label: 'Categories', icon: Layers3 },
+  { id: 'brands', label: 'Brands', icon: Shapes },
+  { id: 'orders', label: 'Orders', icon: MessageSquareText },
+]
 
 export function AdminPage() {
   const [search, setSearch] = useState('')
@@ -19,17 +39,39 @@ export function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [authError, setAuthError] = useState('')
   const [isSubmittingAuth, setIsSubmittingAuth] = useState(false)
+  const [activeTab, setActiveTab] = useState('products')
   const deferredSearch = useDeferredValue(search)
   const {
     products,
-    isLoading,
-    isSaving,
-    isDeleting,
-    error,
+    isLoading: isLoadingProducts,
+    isSaving: isSavingProduct,
+    isDeleting: isDeletingProduct,
+    error: productsError,
     addProduct,
     editProduct,
     removeProduct,
   } = useAdminProducts(isAuthenticated)
+  const {
+    categories,
+    brands,
+    isLoading: isLoadingTaxonomy,
+    isSaving: isSavingTaxonomy,
+    isDeleting: isDeletingTaxonomy,
+    error: taxonomyError,
+    addCategory,
+    editCategory,
+    removeCategory,
+    addBrand,
+    editBrand,
+    removeBrand,
+  } = useAdminTaxonomy(isAuthenticated)
+  const {
+    orders,
+    isLoading: isLoadingOrders,
+    isValidating,
+    error: ordersError,
+    validateOnWhatsApp,
+  } = useAdminOrders(isAuthenticated)
 
   useEffect(() => {
     setIsAuthenticated(hasAdminToken())
@@ -89,6 +131,37 @@ export function AdminPage() {
     setIsAuthenticated(false)
   }
 
+  function getPageMeta() {
+    switch (activeTab) {
+      case 'categories':
+        return {
+          title: 'Categories',
+          description: 'Create and maintain the category list used by your catalog.',
+          stat: `${categories.length} categories`,
+        }
+      case 'brands':
+        return {
+          title: 'Brands',
+          description: 'Manage the brands available when creating or editing products.',
+          stat: `${brands.length} brands`,
+        }
+      case 'orders':
+        return {
+          title: 'Orders',
+          description: 'Review customer orders and validate them directly from WhatsApp.',
+          stat: `${orders.length} orders`,
+        }
+      default:
+        return {
+          title: 'Products',
+          description: 'Manage your catalog with an admin page built around a product-first layout and a clean shadcn-style component system.',
+          stat: `${products.length} items`,
+        }
+    }
+  }
+
+  const pageMeta = getPageMeta()
+
   if (!isAuthenticated) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.98),_rgba(244,244,245,0.92)_40%,_rgba(228,228,231,0.65)_100%)] px-6 py-10">
@@ -110,15 +183,17 @@ export function AdminPage() {
             <StoreNav />
           </div>
           <div className="flex items-center gap-2">
-            <div className="relative hidden md:block">
-              <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-zinc-400" />
-              <Input
-                value={search}
-                onChange={(event) => setSearch(event.target.value)}
-                placeholder="Search..."
-                className="w-72 rounded-xl bg-zinc-50 pl-9"
-              />
-            </div>
+            {activeTab === 'products' ? (
+              <div className="relative hidden md:block">
+                <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-zinc-400" />
+                <Input
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+                  placeholder="Search products..."
+                  className="w-72 rounded-xl bg-zinc-50 pl-9"
+                />
+              </div>
+            ) : null}
             <Button variant="outline" size="icon" aria-label="Open admin">
               <ShoppingBag className="size-4" />
             </Button>
@@ -133,81 +208,162 @@ export function AdminPage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-[1440px] px-6 py-10 lg:px-10">
-        <section className="grid gap-6 xl:grid-cols-[1fr_380px]">
-          <div className="space-y-6">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-              <div>
-                <Badge className="mb-4 rounded-full px-3 py-1 text-[11px] uppercase tracking-[0.28em]">
-                  Admin dashboard
-                </Badge>
-                <h1 className="text-4xl font-semibold tracking-[-0.06em] md:text-5xl">
-                  Products
-                </h1>
-                <p className="mt-3 max-w-2xl text-base text-zinc-500">
-                  Manage your catalog with an admin page built around a product-first layout and a clean shadcn-style component system.
-                </p>
-              </div>
-              <div className="flex items-center gap-3">
-                <Badge variant="outline" className="rounded-full px-3 py-1.5">
-                  {products.length} items
-                </Badge>
-                <Badge variant="outline" className="rounded-full px-3 py-1.5">
-                  Express MVP
-                </Badge>
-              </div>
+      <main className="mx-auto flex max-w-[1440px] flex-col gap-8 px-6 py-10 lg:px-10">
+        <section className="space-y-6">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <Badge className="mb-4 rounded-full px-3 py-1 text-[11px] uppercase tracking-[0.28em]">
+                Admin dashboard
+              </Badge>
+              <h1 className="text-4xl font-semibold tracking-[-0.06em] md:text-5xl">
+                {pageMeta.title}
+              </h1>
+              <p className="mt-3 max-w-2xl text-base text-zinc-500">
+                {pageMeta.description}
+              </p>
             </div>
-
-            <Separator />
-
-            {error ? (
-              <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                {error}
-              </div>
-            ) : null}
-
-            {isLoading ? (
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                {Array.from({ length: 8 }).map((_, index) => (
-                  <div key={index} className="h-[25rem] animate-pulse rounded-[1.6rem] border border-zinc-200 bg-white/70" />
-                ))}
-              </div>
-            ) : (
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                {filteredProducts.map((product, index) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    index={index}
-                    isActive={selectedProduct?.id === product.id}
-                    isDeleting={isDeleting}
-                    onEdit={setSelectedProduct}
-                    onDelete={handleDelete}
-                  />
-                ))}
-              </div>
-            )}
-
-            {!isLoading && filteredProducts.length === 0 ? (
-              <div className="rounded-[1.75rem] border border-dashed border-zinc-300 bg-white/70 px-6 py-12 text-center">
-                <PanelTopOpen className="mx-auto mb-4 size-8 text-zinc-400" />
-                <h2 className="text-xl font-semibold tracking-[-0.03em]">No products found</h2>
-                <p className="mt-2 text-sm text-zinc-500">
-                  Adjust your search or create a new item from the admin panel.
-                </p>
-              </div>
-            ) : null}
+            <div className="flex items-center gap-3">
+              <Badge variant="outline" className="rounded-full px-3 py-1.5">
+                {pageMeta.stat}
+              </Badge>
+              <Badge variant="outline" className="rounded-full px-3 py-1.5">
+                Express MVP
+              </Badge>
+            </div>
           </div>
 
-          <aside className="xl:sticky xl:top-28 xl:self-start">
-            <ProductForm
-              product={selectedProduct}
-              onSubmit={handleSubmit}
-              onCancel={() => setSelectedProduct(null)}
-              isSaving={isSaving}
-            />
-          </aside>
+          <div className="flex flex-wrap gap-3">
+            {adminTabs.map((tab) => {
+              const Icon = tab.icon
+              const isActive = tab.id === activeTab
+
+              return (
+                <Button
+                  key={tab.id}
+                  type="button"
+                  variant={isActive ? 'default' : 'outline'}
+                  className="rounded-full px-4"
+                  onClick={() => setActiveTab(tab.id)}
+                >
+                  <Icon className="size-4" />
+                  {tab.label}
+                </Button>
+              )
+            })}
+          </div>
+
+          <Separator />
         </section>
+
+        {activeTab === 'products' ? (
+          <section className="grid gap-6 xl:grid-cols-[1fr_380px]">
+            <div className="space-y-6">
+              {productsError ? (
+                <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                  {productsError}
+                </div>
+              ) : null}
+
+              {isLoadingProducts || isLoadingTaxonomy ? (
+                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                  {Array.from({ length: 8 }).map((_, index) => (
+                    <div key={index} className="h-[25rem] animate-pulse rounded-[1.6rem] border border-zinc-200 bg-white/70" />
+                  ))}
+                </div>
+              ) : (
+                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                  {filteredProducts.map((product, index) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      index={index}
+                      isActive={selectedProduct?.id === product.id}
+                      isDeleting={isDeletingProduct}
+                      onEdit={setSelectedProduct}
+                      onDelete={handleDelete}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {!isLoadingProducts && filteredProducts.length === 0 ? (
+                <div className="rounded-[1.75rem] border border-dashed border-zinc-300 bg-white/70 px-6 py-12 text-center text-sm text-zinc-500">
+                  No products found.
+                </div>
+              ) : null}
+            </div>
+
+            <aside className="xl:sticky xl:top-28 xl:self-start">
+              <ProductForm
+                key={selectedProduct?.id ?? 'new-product'}
+                product={selectedProduct}
+                onSubmit={handleSubmit}
+                onCancel={() => setSelectedProduct(null)}
+                isSaving={isSavingProduct}
+                categories={categories}
+                brands={brands}
+              />
+            </aside>
+          </section>
+        ) : null}
+
+        {activeTab === 'categories' ? (
+          isLoadingTaxonomy ? (
+            <div className="grid gap-6 xl:grid-cols-[1fr_360px]">
+              <div className="h-80 animate-pulse rounded-[1.75rem] border border-zinc-200 bg-white/70" />
+              <div className="h-80 animate-pulse rounded-[1.75rem] border border-zinc-200 bg-white/70" />
+            </div>
+          ) : (
+            <TaxonomyManager
+              title="Categories"
+              description="These categories appear in the admin product form and on the storefront categories page."
+              items={categories}
+              itemLabel="category"
+              isSaving={isSavingTaxonomy}
+              isDeleting={isDeletingTaxonomy}
+              onCreate={addCategory}
+              onUpdate={editCategory}
+              onDelete={removeCategory}
+            />
+          )
+        ) : null}
+
+        {activeTab === 'brands' ? (
+          isLoadingTaxonomy ? (
+            <div className="grid gap-6 xl:grid-cols-[1fr_360px]">
+              <div className="h-80 animate-pulse rounded-[1.75rem] border border-zinc-200 bg-white/70" />
+              <div className="h-80 animate-pulse rounded-[1.75rem] border border-zinc-200 bg-white/70" />
+            </div>
+          ) : (
+            <TaxonomyManager
+              title="Brands"
+              description="Manage the brand directory used by the admin product form and the storefront brands page."
+              items={brands}
+              itemLabel="brand"
+              isSaving={isSavingTaxonomy}
+              isDeleting={isDeletingTaxonomy}
+              onCreate={addBrand}
+              onUpdate={editBrand}
+              onDelete={removeBrand}
+            />
+          )
+        ) : null}
+
+        {activeTab === 'orders' ? (
+          <OrdersPanel
+            orders={orders}
+            isLoading={isLoadingOrders}
+            isValidating={isValidating}
+            error={ordersError}
+            onValidateOnWhatsApp={validateOnWhatsApp}
+          />
+        ) : null}
+
+        {(activeTab === 'categories' || activeTab === 'brands') && taxonomyError ? (
+          <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {taxonomyError}
+          </div>
+        ) : null}
       </main>
     </div>
   )

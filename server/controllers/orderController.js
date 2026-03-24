@@ -1,5 +1,5 @@
 import prisma from '../db/prisma.js'
-import { createOrder, listOrders } from '../models/orderModel.js'
+import { createOrder, getOrderById, listOrders, updateOrder } from '../models/orderModel.js'
 import { presentOrder } from '../presenters/orderPresenter.js'
 
 function sanitizeCheckout(payload) {
@@ -105,6 +105,31 @@ export async function getAdminOrders(req, res, next) {
   try {
     const orders = await listOrders(prisma)
     return res.json(orders.map(presentOrder))
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export async function validateAdminOrderOnWhatsApp(req, res, next) {
+  try {
+    const id = Number(req.params.id)
+
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({ message: 'Invalid order id.' })
+    }
+
+    const existingOrder = await getOrderById(prisma, id)
+
+    if (!existingOrder) {
+      return res.status(404).json({ message: 'Order not found.' })
+    }
+
+    const updatedOrder = await updateOrder(prisma, id, {
+      status: 'VALIDATED_WHATSAPP',
+      validatedAt: new Date(),
+    })
+
+    return res.json(presentOrder(updatedOrder))
   } catch (error) {
     return next(error)
   }

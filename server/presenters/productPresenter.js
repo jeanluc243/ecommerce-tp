@@ -2,13 +2,66 @@ function formatCurrencyValue(value) {
   return Number(value ?? 0)
 }
 
+function normalizeProductMedia(product) {
+  const media = Array.isArray(product.media)
+    ? product.media
+        .map((item, index) => {
+          if (!item || typeof item !== 'object') {
+            return null
+          }
+
+          const src = typeof item.src === 'string' ? item.src : ''
+          if (!src) {
+            return null
+          }
+
+          return {
+            id:
+              typeof item.id === 'string' && item.id
+                ? item.id
+                : `product-${product.id}-media-${index}`,
+            name:
+              typeof item.name === 'string' && item.name
+                ? item.name
+                : `${product.name} ${index + 1}`,
+            mimeType:
+              typeof item.mimeType === 'string' && item.mimeType
+                ? item.mimeType
+                : 'image/*',
+            src,
+          }
+        })
+        .filter(Boolean)
+    : []
+
+  if (media.length > 0) {
+    return media
+  }
+
+  if (product.imageUrl) {
+    return [
+      {
+        id: `product-${product.id}-legacy-image`,
+        name: `${product.name} cover`,
+        mimeType: 'image/*',
+        src: product.imageUrl,
+      },
+    ]
+  }
+
+  return []
+}
+
 export function presentProduct(product) {
+  const media = normalizeProductMedia(product)
+
   return {
     id: product.id,
     name: product.name,
     description: product.description ?? 'Description of this product.',
     price: formatCurrencyValue(product.price),
-    imageUrl: product.imageUrl,
+    imageUrl: media[0]?.src ?? product.imageUrl,
+    media,
     category: product.category ?? 'Electronics',
     brand: product.brand ?? 'Store',
     stock: product.stock,

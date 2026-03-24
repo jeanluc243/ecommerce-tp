@@ -25,3 +25,30 @@ export async function listOrders(db) {
     },
   })
 }
+
+export async function getOrderById(db, id) {
+  return db.order.findUnique({
+    where: { id },
+    include: {
+      items: {
+        include: {
+          product: true,
+        },
+      },
+    },
+  })
+}
+
+export async function updateOrder(db, id, data) {
+  return db.order.update({
+    where: { id },
+    data,
+    include: {
+      items: {
+        include: {
+          product: true,
+        },
+      },
+    },
+  })
+}

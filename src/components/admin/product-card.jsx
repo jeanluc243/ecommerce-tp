@@ -2,6 +2,7 @@ import { Pencil, Trash2 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { normalizeProductMedia } from '@/lib/product-media'
 
 const placeholderGradients = [
   'from-zinc-800 via-zinc-700 to-zinc-900',
@@ -19,14 +20,24 @@ function formatPrice(price) {
   }).format(price)
 }
 
-function ProductImage({ imageUrl, title, index }) {
-  if (imageUrl) {
+function ProductImage({ product, title, index }) {
+  const media = normalizeProductMedia(product)
+  const coverImage = media[0]?.src
+
+  if (coverImage) {
     return (
-      <img
-        src={imageUrl}
-        alt={title}
-        className="h-60 w-full rounded-t-2xl object-cover"
-      />
+      <div className="relative">
+        <img
+          src={coverImage}
+          alt={title}
+          className="h-60 w-full rounded-t-2xl object-cover"
+        />
+        {media.length > 1 ? (
+          <div className="absolute right-3 top-3 rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white backdrop-blur">
+            +{media.length - 1}
+          </div>
+        ) : null}
+      </div>
     )
   }
 
@@ -53,7 +64,7 @@ export function ProductCard({
     <Card
       className={`overflow-hidden rounded-[1.6rem] border-zinc-200/80 ${isActive ? 'ring-2 ring-zinc-900/10' : ''}`}
     >
-      <ProductImage imageUrl={product.imageUrl} title={product.name} index={index} />
+      <ProductImage product={product} title={product.name} index={index} />
       <div className="space-y-4 p-4">
         <div className="flex items-start justify-between gap-3">
           <Badge variant="outline" className="rounded-md px-2 py-1 text-[11px] font-semibold">

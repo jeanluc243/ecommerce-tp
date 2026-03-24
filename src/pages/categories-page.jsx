@@ -1,23 +1,39 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CartPanel } from '@/components/store/cart-panel'
 import { StoreShell } from '@/components/store/store-shell'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { useStoreProducts } from '@/hooks/use-store-products'
+import { getCategories } from '@/services/api'
 
 export function CategoriesPage() {
-  const { products, isLoading, error } = useStoreProducts()
+  const [categories, setCategories] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState('')
 
-  const categories = Array.from(
-    products.reduce((map, product) => {
-      const category = product.category || 'Uncategorized'
-      const current = map.get(category) ?? { name: category, count: 0, sampleId: product.id }
-      current.count += 1
-      map.set(category, current)
-      return map
-    }, new Map()).values(),
-  )
+  useEffect(() => {
+    let active = true
+
+    async function load() {
+      try {
+        const data = await getCategories()
+        if (!active) return
+        setCategories(data)
+      } catch (loadError) {
+        if (!active) return
+        setError(loadError.message)
+      } finally {
+        if (active) setIsLoading(false)
+      }
+    }
+
+    load()
+
+    return () => {
+      active = false
+    }
+  }, [])
 
   return (
     <StoreShell search="" onSearchChange={() => {}} aside={<CartPanel />}>
@@ -50,7 +66,7 @@ export function CategoriesPage() {
               <Card key={category.name} className="rounded-[1.6rem] border-zinc-200/80">
                 <CardContent className="space-y-4 p-6">
                   <Badge variant="outline" className="rounded-full px-3 py-1.5">
-                    {category.count} items
+                    {category.productCount} items
                   </Badge>
                   <div>
                     <h2 className="text-2xl font-semibold tracking-[-0.04em]">{category.name}</h2>
@@ -58,9 +74,13 @@ export function CategoriesPage() {
                       Browse products grouped under this category.
                     </p>
                   </div>
-                  <Link to={`/products/${category.sampleId}`} className="text-sm font-semibold text-zinc-950 underline-offset-4 hover:underline">
-                    Open a product in this category
-                  </Link>
+                  {category.sampleProductId ? (
+                    <Link to={`/products/${category.sampleProductId}`} className="text-sm font-semibold text-zinc-950 underline-offset-4 hover:underline">
+                      Open a product in this category
+                    </Link>
+                  ) : (
+                    <span className="text-sm text-zinc-400">No product linked yet</span>
+                  )}
                 </CardContent>
               </Card>
             ))}

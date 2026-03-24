@@ -11,7 +11,7 @@ export function StoreProductCard({ product, index }) {
   return (
     <Card className="overflow-hidden rounded-[1.6rem] border-zinc-200/80">
       <Link to={`/products/${product.id}`} className="block">
-        <ProductVisual imageUrl={product.imageUrl} title={product.name} index={index} className="h-64 rounded-t-[1.6rem]" />
+        <ProductVisual product={product} title={product.name} index={index} className="h-64 rounded-t-[1.6rem]" />
       </Link>
       <div className="space-y-4 p-5">
         <Badge variant="outline" className="rounded-md px-2 py-1 text-[11px] font-semibold">
