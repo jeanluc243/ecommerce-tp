@@ -19,15 +19,15 @@ export function AdminLoginForm({ onSubmit, isSubmitting, error }) {
   return (
     <Card className="w-full max-w-md rounded-[2rem] border-zinc-200/80 bg-white/95">
       <CardHeader className="space-y-3">
-        <CardTitle className="text-3xl tracking-[-0.05em]">Admin login</CardTitle>
+        <CardTitle className="text-3xl tracking-[-0.05em]">Connexion administrateur</CardTitle>
         <CardDescription>
-          `/admin` is protected. Enter the admin phone number and password.
+          `/admin` est protege. Entrez le numero de telephone et le mot de passe administrateur.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-zinc-700">Phone number</label>
+            <label className="text-sm font-medium text-zinc-700">Numero de telephone</label>
             <div className="relative">
               <Phone className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-zinc-400" />
               <Input
@@ -40,7 +40,7 @@ export function AdminLoginForm({ onSubmit, isSubmitting, error }) {
             </div>
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-zinc-700">Password</label>
+            <label className="text-sm font-medium text-zinc-700">Mot de passe</label>
             <div className="relative">
               <LockKeyhole className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-zinc-400" />
               <Input
@@ -59,7 +59,7 @@ export function AdminLoginForm({ onSubmit, isSubmitting, error }) {
             </div>
           ) : null}
           <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? 'Connecting...' : 'Login'}
+            {isSubmitting ? 'Connexion...' : 'Se connecter'}
           </Button>
         </form>
       </CardContent>

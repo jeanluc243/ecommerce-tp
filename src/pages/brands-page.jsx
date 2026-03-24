@@ -40,11 +40,11 @@ export function BrandsPage() {
       <div className="space-y-6">
         <div>
           <Badge className="mb-4 rounded-full px-3 py-1 text-[11px] uppercase tracking-[0.28em]">
-            Explore
+            Explorer
           </Badge>
-          <h1 className="text-4xl font-semibold tracking-[-0.06em] md:text-5xl">Brands</h1>
+          <h1 className="text-4xl font-semibold tracking-[-0.06em] md:text-5xl">Marques</h1>
           <p className="mt-3 max-w-2xl text-base text-zinc-500">
-            Navigate your catalog by brand and drill down into the corresponding products.
+            Parcourez votre catalogue par marque et retrouvez les produits associes.
           </p>
         </div>
 
@@ -66,20 +66,20 @@ export function BrandsPage() {
               <Card key={brand.name} className="rounded-[1.6rem] border-zinc-200/80">
                 <CardContent className="space-y-4 p-6">
                   <Badge variant="outline" className="rounded-full px-3 py-1.5">
-                    {brand.productCount} items
+                    {brand.productCount} article{brand.productCount > 1 ? 's' : ''}
                   </Badge>
                   <div>
                     <h2 className="text-2xl font-semibold tracking-[-0.04em]">{brand.name}</h2>
                     <p className="mt-2 text-sm text-zinc-500">
-                      Browse products published under this brand.
+                      Parcourir les produits publies sous cette marque.
                     </p>
                   </div>
                   {brand.sampleProductId ? (
                     <Link to={`/products/${brand.sampleProductId}`} className="text-sm font-semibold text-zinc-950 underline-offset-4 hover:underline">
-                      Open a product from this brand
+                      Ouvrir un produit de cette marque
                     </Link>
                   ) : (
-                    <span className="text-sm text-zinc-400">No product linked yet</span>
+                    <span className="text-sm text-zinc-400">Aucun produit lie pour le moment</span>
                   )}
                 </CardContent>
               </Card>

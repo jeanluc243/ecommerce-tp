@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 function formatPrice(price) {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('fr-FR', {
     style: 'currency',
     currency: 'USD',
   }).format(price)
@@ -23,9 +23,9 @@ function normalizePhone(phone) {
 }
 
 function createWhatsAppUrl(order) {
-  const items = order.items.map((item) => `${item.productName ?? `Product #${item.productId}`} x${item.quantity}`).join(', ')
+  const items = order.items.map((item) => `${item.productName ?? `Produit n°${item.productId}`} x${item.quantity}`).join(', ')
   const lines = [
-    `Bonjour, votre commande #${order.id} a ete validee.`,
+    `Bonjour, votre commande n°${order.id} a ete validee.`,
     `Montant: ${formatPrice(order.totalAmount)}.`,
     `Articles: ${items}.`,
   ]
@@ -67,7 +67,7 @@ export function OrdersPanel({
       {orders.length === 0 ? (
         <Card className="rounded-[1.75rem] border-zinc-200/80 bg-white/95">
           <CardContent className="px-6 py-10 text-center text-sm text-zinc-500">
-            No customer orders yet.
+            Aucune commande client pour le moment.
           </CardContent>
         </Card>
       ) : (
@@ -75,7 +75,7 @@ export function OrdersPanel({
           <Card key={order.id} className="rounded-[1.75rem] border-zinc-200/80 bg-white/95">
             <CardHeader className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
               <div>
-                <CardTitle className="text-xl tracking-[-0.03em]">Order #{order.id}</CardTitle>
+                <CardTitle className="text-xl tracking-[-0.03em]">Commande n°{order.id}</CardTitle>
                 <p className="mt-2 text-sm text-zinc-500">{formatDate(order.createdAt)}</p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
@@ -86,7 +86,7 @@ export function OrdersPanel({
                       : 'bg-amber-50 text-amber-700'
                   }
                 >
-                  {order.status === 'VALIDATED_WHATSAPP' ? 'Validated on WhatsApp' : 'Pending'}
+                  {order.status === 'VALIDATED_WHATSAPP' ? 'Validee sur WhatsApp' : 'En attente'}
                 </Badge>
                 <Badge variant="outline" className="rounded-full px-3 py-1.5">
                   {formatPrice(order.totalAmount)}
@@ -96,11 +96,11 @@ export function OrdersPanel({
             <CardContent className="space-y-5">
               <div className="grid gap-4 md:grid-cols-[220px_1fr]">
                 <div className="rounded-[1.35rem] bg-zinc-50 p-4">
-                  <p className="text-sm text-zinc-500">Client phone</p>
+                  <p className="text-sm text-zinc-500">Telephone client</p>
                   <p className="mt-1 font-semibold text-zinc-950">{order.customerPhone}</p>
                   {order.validatedAt ? (
                     <>
-                      <p className="mt-4 text-sm text-zinc-500">Validated at</p>
+                      <p className="mt-4 text-sm text-zinc-500">Validee le</p>
                       <p className="mt-1 font-semibold text-zinc-950">{formatDate(order.validatedAt)}</p>
                     </>
                   ) : null}
@@ -109,8 +109,8 @@ export function OrdersPanel({
                   {order.items.map((item) => (
                     <div key={item.id} className="flex items-center justify-between gap-3 rounded-[1.2rem] border border-zinc-200 px-4 py-3">
                       <div>
-                        <p className="font-medium text-zinc-950">{item.productName ?? `Product #${item.productId}`}</p>
-                        <p className="text-sm text-zinc-500">Qty {item.quantity}</p>
+                        <p className="font-medium text-zinc-950">{item.productName ?? `Produit n°${item.productId}`}</p>
+                        <p className="text-sm text-zinc-500">Qté {item.quantity}</p>
                       </div>
                       <p className="font-semibold text-zinc-950">{formatPrice(item.unitPrice * item.quantity)}</p>
                     </div>
@@ -125,7 +125,7 @@ export function OrdersPanel({
                   className="rounded-xl bg-[#25D366] px-5 text-white hover:bg-[#20bd5a]"
                 >
                   <WhatsAppLogo className="size-4" />
-                  {order.status === 'VALIDATED_WHATSAPP' ? 'Reopen WhatsApp' : 'Validate on WhatsApp'}
+                  {order.status === 'VALIDATED_WHATSAPP' ? 'Rouvrir WhatsApp' : 'Valider sur WhatsApp'}
                 </Button>
                 <a
                   href={createWhatsAppUrl(order)}
@@ -134,7 +134,7 @@ export function OrdersPanel({
                   className="inline-flex items-center gap-2 text-sm font-medium text-zinc-600 underline-offset-4 hover:text-zinc-950 hover:underline"
                 >
                   <ExternalLink className="size-4" />
-                  Open conversation
+                  Ouvrir la conversation
                 </a>
               </div>
             </CardContent>

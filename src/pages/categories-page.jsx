@@ -40,11 +40,11 @@ export function CategoriesPage() {
       <div className="space-y-6">
         <div>
           <Badge className="mb-4 rounded-full px-3 py-1 text-[11px] uppercase tracking-[0.28em]">
-            Explore
+            Explorer
           </Badge>
           <h1 className="text-4xl font-semibold tracking-[-0.06em] md:text-5xl">Categories</h1>
           <p className="mt-3 max-w-2xl text-base text-zinc-500">
-            Explore the catalog by category and jump back into the matching product list.
+            Explorez le catalogue par categorie et accedez rapidement aux produits correspondants.
           </p>
         </div>
 
@@ -66,20 +66,20 @@ export function CategoriesPage() {
               <Card key={category.name} className="rounded-[1.6rem] border-zinc-200/80">
                 <CardContent className="space-y-4 p-6">
                   <Badge variant="outline" className="rounded-full px-3 py-1.5">
-                    {category.productCount} items
+                    {category.productCount} article{category.productCount > 1 ? 's' : ''}
                   </Badge>
                   <div>
                     <h2 className="text-2xl font-semibold tracking-[-0.04em]">{category.name}</h2>
                     <p className="mt-2 text-sm text-zinc-500">
-                      Browse products grouped under this category.
+                      Parcourir les produits classes dans cette categorie.
                     </p>
                   </div>
                   {category.sampleProductId ? (
                     <Link to={`/products/${category.sampleProductId}`} className="text-sm font-semibold text-zinc-950 underline-offset-4 hover:underline">
-                      Open a product in this category
+                      Ouvrir un produit de cette categorie
                     </Link>
                   ) : (
-                    <span className="text-sm text-zinc-400">No product linked yet</span>
+                    <span className="text-sm text-zinc-400">Aucun produit lie pour le moment</span>
                   )}
                 </CardContent>
               </Card>

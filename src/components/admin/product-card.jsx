@@ -14,7 +14,7 @@ const placeholderGradients = [
 ]
 
 function formatPrice(price) {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('fr-FR', {
     style: 'currency',
     currency: 'USD',
   }).format(price)
@@ -71,7 +71,7 @@ export function ProductCard({
             {product.category}
           </Badge>
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="icon" onClick={() => onEdit(product)} aria-label={`Edit ${product.name}`}>
+            <Button variant="outline" size="icon" onClick={() => onEdit(product)} aria-label={`Modifier ${product.name}`}>
               <Pencil className="size-4" />
             </Button>
             <Button
@@ -79,7 +79,7 @@ export function ProductCard({
               size="icon"
               onClick={() => onDelete(product)}
               disabled={isDeleting}
-              aria-label={`Delete ${product.name}`}
+              aria-label={`Supprimer ${product.name}`}
             >
               <Trash2 className="size-4" />
             </Button>
@@ -101,7 +101,7 @@ export function ProductCard({
             variant={product.inStock ? 'default' : 'secondary'}
             className={product.inStock ? 'bg-emerald-50 text-emerald-700' : 'bg-zinc-100 text-zinc-700'}
           >
-            {product.inStock ? `${product.stock} in stock` : 'Out of stock'}
+            {product.inStock ? `${product.stock} en stock` : 'Rupture de stock'}
           </Badge>
           <span className="text-xl font-semibold text-zinc-950">
             {formatPrice(product.price)}

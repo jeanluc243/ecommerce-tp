@@ -33,7 +33,7 @@ export function CheckoutPage() {
       })
 
       clearCart()
-      setSuccessMessage(`Order #${order.id} created successfully.`)
+      setSuccessMessage(`Commande n°${order.id} creee avec succes.`)
       setTimeout(() => navigate('/'), 1200)
     } catch (submitError) {
       setError(submitError.message)
@@ -47,9 +47,9 @@ export function CheckoutPage() {
       <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[1fr_420px]">
         <Card className="rounded-[1.75rem]">
           <CardHeader>
-            <CardTitle className="text-3xl tracking-[-0.04em]">Checkout</CardTitle>
+            <CardTitle className="text-3xl tracking-[-0.04em]">Paiement</CardTitle>
             <CardDescription>
-              Enter your phone number and a 4-digit code before confirming the purchase.
+              Entrez votre numero de telephone et un code a 4 chiffres avant de confirmer l'achat.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-5">
@@ -58,7 +58,7 @@ export function CheckoutPage() {
 
             <form className="space-y-4" onSubmit={handleSubmit}>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-zinc-700">Phone number</label>
+                <label className="text-sm font-medium text-zinc-700">Numero de telephone</label>
                 <Input
                   value={customerPhone}
                   onChange={(event) => setCustomerPhone(event.target.value.replace(/\D/g, ''))}
@@ -68,7 +68,7 @@ export function CheckoutPage() {
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-zinc-700">4-digit code</label>
+                <label className="text-sm font-medium text-zinc-700">Code a 4 chiffres</label>
                 <Input
                   value={customerCode}
                   onChange={(event) => setCustomerCode(event.target.value.replace(/\D/g, '').slice(0, 4))}
@@ -80,11 +80,11 @@ export function CheckoutPage() {
               </div>
               <div className="grid gap-3 md:grid-cols-2">
                 <Button type="submit" className="w-full" disabled={!items.length || isSubmitting}>
-                  {isSubmitting ? 'Placing order...' : 'Confirm purchase'}
+                  {isSubmitting ? 'Commande en cours...' : 'Confirmer l\'achat'}
                 </Button>
                 <Link to="/">
                   <Button type="button" variant="outline" className="w-full">
-                    Continue shopping
+                    Continuer les achats
                   </Button>
                 </Link>
               </div>
@@ -94,20 +94,20 @@ export function CheckoutPage() {
 
         <Card className="rounded-[1.75rem]">
           <CardHeader>
-            <CardTitle>Order summary</CardTitle>
-            <CardDescription>{items.length} lines in your cart.</CardDescription>
+            <CardTitle>Resume de la commande</CardTitle>
+            <CardDescription>{items.length} ligne{items.length > 1 ? 's' : ''} dans votre panier.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             {items.length === 0 ? (
               <div className="rounded-2xl border border-dashed border-zinc-200 bg-zinc-50 p-5 text-sm text-zinc-500">
-                No items in cart.
+                Aucun article dans le panier.
               </div>
             ) : (
               items.map((item) => (
                 <div key={item.product.id} className="flex items-center justify-between gap-3 rounded-2xl border border-zinc-200 p-4">
                   <div>
                     <p className="font-semibold text-zinc-950">{item.product.name}</p>
-                    <p className="text-sm text-zinc-500">Qty {item.quantity}</p>
+                    <p className="text-sm text-zinc-500">Qté {item.quantity}</p>
                   </div>
                   <span className="font-semibold text-zinc-950">
                     {formatPrice(item.product.price * item.quantity)}
@@ -117,7 +117,7 @@ export function CheckoutPage() {
             )}
             <div className="rounded-2xl bg-zinc-950 p-5 text-white">
               <div className="flex items-center justify-between text-sm text-zinc-300">
-                <span>Total amount</span>
+                <span>Montant total</span>
                 <span className="text-xl font-semibold text-white">{formatPrice(totalAmount)}</span>
               </div>
             </div>

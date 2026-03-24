@@ -21,7 +21,7 @@ export function normalizeProductMedia(product) {
     return [
       {
         id: `product-${product.id ?? 'draft'}-legacy-image`,
-        name: product?.name ? `${product.name} cover` : 'Product image',
+        name: product?.name ? `${product.name} couverture` : 'Image produit',
         mimeType: 'image/*',
         src: product.imageUrl,
       },
@@ -39,7 +39,7 @@ function readFileAsDataUrl(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '')
-    reader.onerror = () => reject(new Error(`Unable to read "${file.name}".`))
+    reader.onerror = () => reject(new Error(`Impossible de lire "${file.name}".`))
     reader.readAsDataURL(file)
   })
 }

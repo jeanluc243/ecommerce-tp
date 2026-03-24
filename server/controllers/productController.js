@@ -63,19 +63,19 @@ function sanitizeProductInput(payload) {
 
 function validateProductInput(data) {
   if (!data.name) {
-    return 'Product name is required.'
+    return 'Le nom du produit est requis.'
   }
 
   if (Number.isNaN(data.price) || data.price < 0) {
-    return 'Price must be a valid positive number.'
+    return 'Le prix doit etre un nombre positif valide.'
   }
 
   if (!Number.isInteger(data.stock) || data.stock < 0) {
-    return 'Stock must be a valid positive integer.'
+    return 'Le stock doit etre un entier positif valide.'
   }
 
   if (data.media.length > MAX_PRODUCT_MEDIA) {
-    return `You can upload up to ${MAX_PRODUCT_MEDIA} images per product.`
+    return `Vous pouvez televerser jusqu'a ${MAX_PRODUCT_MEDIA} images par produit.`
   }
 
   const hasInvalidMedia = data.media.some(
@@ -85,7 +85,7 @@ function validateProductInput(data) {
   )
 
   if (hasInvalidMedia) {
-    return 'Images must be valid image files under the allowed size limit.'
+    return 'Les images doivent etre des fichiers image valides respectant la limite de taille autorisee.'
   }
 
   return null
@@ -114,13 +114,13 @@ export async function getProduct(req, res, next) {
     const id = getProductId(req.params.id)
 
     if (!id) {
-      return res.status(400).json({ message: 'Invalid product id.' })
+      return res.status(400).json({ message: 'Identifiant de produit invalide.' })
     }
 
     const product = await getProductById(id)
 
     if (!product) {
-      return res.status(404).json({ message: 'Product not found.' })
+      return res.status(404).json({ message: 'Produit introuvable.' })
     }
 
     return res.json(presentProduct(product))
@@ -150,13 +150,13 @@ export async function updateAdminProduct(req, res, next) {
     const id = getProductId(req.params.id)
 
     if (!id) {
-      return res.status(400).json({ message: 'Invalid product id.' })
+      return res.status(400).json({ message: 'Identifiant de produit invalide.' })
     }
 
     const existingProduct = await getProductById(id)
 
     if (!existingProduct) {
-      return res.status(404).json({ message: 'Product not found.' })
+      return res.status(404).json({ message: 'Produit introuvable.' })
     }
 
     const data = sanitizeProductInput(req.body)
@@ -178,13 +178,13 @@ export async function deleteAdminProduct(req, res, next) {
     const id = getProductId(req.params.id)
 
     if (!id) {
-      return res.status(400).json({ message: 'Invalid product id.' })
+      return res.status(400).json({ message: 'Identifiant de produit invalide.' })
     }
 
     const existingProduct = await getProductById(id)
 
     if (!existingProduct) {
-      return res.status(404).json({ message: 'Product not found.' })
+      return res.status(404).json({ message: 'Produit introuvable.' })
     }
 
     await deleteProduct(id)

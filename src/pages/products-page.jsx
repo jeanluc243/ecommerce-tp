@@ -28,15 +28,15 @@ export function ProductsPage() {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <Badge className="mb-4 rounded-full px-3 py-1 text-[11px] uppercase tracking-[0.28em]">
-              Catalog
+              Catalogue
             </Badge>
-            <h1 className="text-4xl font-semibold tracking-[-0.06em] md:text-5xl">Products</h1>
+            <h1 className="text-4xl font-semibold tracking-[-0.06em] md:text-5xl">Produits</h1>
             <p className="mt-3 max-w-2xl text-base text-zinc-500">
-              Browse the complete list of articles and open any product page directly.
+              Parcourez la liste complete des articles et ouvrez directement la fiche du produit souhaite.
             </p>
           </div>
           <Badge variant="outline" className="rounded-full px-3 py-1.5">
-            {products.length} articles
+            {products.length} article{products.length > 1 ? 's' : ''}
           </Badge>
         </div>
 

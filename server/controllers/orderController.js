@@ -12,19 +12,19 @@ function sanitizeCheckout(payload) {
 
 function validateCheckoutInput(data) {
   if (!/^\d{6,15}$/.test(data.customerPhone)) {
-    return 'Phone number must contain between 6 and 15 digits.'
+    return 'Le numero de telephone doit contenir entre 6 et 15 chiffres.'
   }
 
   if (!/^\d{4}$/.test(data.customerCode)) {
-    return 'Code must contain exactly 4 digits.'
+    return 'Le code doit contenir exactement 4 chiffres.'
   }
 
   if (data.items.length === 0) {
-    return 'Cart is empty.'
+    return 'Le panier est vide.'
   }
 
   if (data.items.some((item) => !Number.isInteger(Number(item.productId)) || Number(item.quantity) <= 0)) {
-    return 'Cart contains invalid items.'
+    return 'Le panier contient des articles invalides.'
   }
 
   return null
@@ -45,7 +45,7 @@ export async function createCheckoutOrder(req, res, next) {
     })
 
     if (products.length !== productIds.length) {
-      return res.status(400).json({ message: 'Some products no longer exist.' })
+      return res.status(400).json({ message: 'Certains produits n\'existent plus.' })
     }
 
     const productMap = new Map(products.map((product) => [product.id, product]))
@@ -58,11 +58,11 @@ export async function createCheckoutOrder(req, res, next) {
       const product = productMap.get(productId)
 
       if (!product) {
-        return res.status(400).json({ message: 'Invalid product in cart.' })
+        return res.status(400).json({ message: 'Produit invalide dans le panier.' })
       }
 
       if (product.stock < quantity) {
-        return res.status(400).json({ message: `Not enough stock for ${product.name}.` })
+        return res.status(400).json({ message: `Stock insuffisant pour ${product.name}.` })
       }
 
       totalAmount += product.price * quantity
@@ -115,13 +115,13 @@ export async function validateAdminOrderOnWhatsApp(req, res, next) {
     const id = Number(req.params.id)
 
     if (!Number.isInteger(id) || id <= 0) {
-      return res.status(400).json({ message: 'Invalid order id.' })
+      return res.status(400).json({ message: 'Identifiant de commande invalide.' })
     }
 
     const existingOrder = await getOrderById(prisma, id)
 
     if (!existingOrder) {
-      return res.status(404).json({ message: 'Order not found.' })
+      return res.status(404).json({ message: 'Commande introuvable.' })
     }
 
     const updatedOrder = await updateOrder(prisma, id, {

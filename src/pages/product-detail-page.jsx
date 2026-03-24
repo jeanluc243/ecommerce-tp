@@ -51,7 +51,7 @@ export function ProductDetailPage() {
   }
 
   if (!product) {
-    return <div className="p-10 text-zinc-600">Product not found.</div>
+    return <div className="p-10 text-zinc-600">Produit introuvable.</div>
   }
 
   const media = normalizeProductMedia(product)
@@ -65,7 +65,7 @@ export function ProductDetailPage() {
       <div className="mx-auto max-w-6xl space-y-6">
         <Link to="/" className="inline-flex items-center gap-2 text-sm font-medium text-zinc-600">
           <ArrowLeft className="size-4" />
-          Back to store
+          Retour a la boutique
         </Link>
         <Card className="overflow-hidden rounded-[2rem]">
           <div className="grid lg:grid-cols-[1.1fr_0.9fr]">
@@ -103,13 +103,13 @@ export function ProductDetailPage() {
                 </div>
                 <div className="grid gap-4 rounded-2xl bg-zinc-50 p-5 md:grid-cols-2">
                   <div>
-                    <p className="text-sm text-zinc-500">Brand</p>
+                    <p className="text-sm text-zinc-500">Marque</p>
                     <p className="mt-1 font-semibold text-zinc-950">{product.brand}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-zinc-500">Availability</p>
+                    <p className="text-sm text-zinc-500">Disponibilite</p>
                     <p className="mt-1 font-semibold text-zinc-950">
-                      {product.inStock ? `${product.stock} items in stock` : 'Out of stock'}
+                      {product.inStock ? `${product.stock} article${product.stock > 1 ? 's' : ''} en stock` : 'Rupture de stock'}
                     </p>
                   </div>
                 </div>
@@ -134,7 +134,7 @@ export function ProductDetailPage() {
                     onClick={() => addItem(product, quantity)}
                     disabled={!product.inStock}
                   >
-                    Add to cart
+                    Ajouter au panier
                   </Button>
                   <Link to="/checkout">
                     <Button
@@ -142,7 +142,7 @@ export function ProductDetailPage() {
                       onClick={() => addItem(product, quantity)}
                       disabled={!product.inStock}
                     >
-                      Buy now
+                      Acheter maintenant
                     </Button>
                   </Link>
                 </div>

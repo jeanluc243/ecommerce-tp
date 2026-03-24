@@ -28,15 +28,15 @@ export function StoreHomePage() {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <Badge className="mb-4 rounded-full px-3 py-1 text-[11px] uppercase tracking-[0.28em]">
-              New collection
+              Nouvelle collection
             </Badge>
-            <h1 className="text-4xl font-semibold tracking-[-0.06em] md:text-5xl">Store</h1>
+            <h1 className="text-4xl font-semibold tracking-[-0.06em] md:text-5xl">Boutique</h1>
             <p className="mt-3 max-w-2xl text-base text-zinc-500">
-              Browse every article, open a product page, and add items to your cart before final checkout.
+              Parcourez tous les articles, ouvrez une fiche produit et ajoutez vos selections au panier avant la commande.
             </p>
           </div>
           <Badge variant="outline" className="rounded-full px-3 py-1.5">
-            {products.length} articles
+            {products.length} article{products.length > 1 ? 's' : ''}
           </Badge>
         </div>
 

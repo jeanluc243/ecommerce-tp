@@ -2,10 +2,10 @@ import { Link, useLocation } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 
 const storeNavigation = [
-  { label: 'Store', to: '/' },
-  { label: 'Products', to: '/products' },
+  { label: 'Boutique', to: '/' },
+  { label: 'Produits', to: '/products' },
   { label: 'Categories', to: '/categories' },
-  { label: 'Brands', to: '/brands' },
+  { label: 'Marques', to: '/brands' },
 ]
 
 export function StoreNav() {

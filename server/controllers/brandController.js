@@ -63,7 +63,7 @@ export async function createAdminBrand(req, res, next) {
     const data = sanitizeName(req.body)
 
     if (!data.name) {
-      return res.status(400).json({ message: 'Brand name is required.' })
+      return res.status(400).json({ message: 'Le nom de la marque est requis.' })
     }
 
     const brand = await createBrand(data)
@@ -82,19 +82,19 @@ export async function updateAdminBrand(req, res, next) {
     const id = getEntityId(req.params.id)
 
     if (!id) {
-      return res.status(400).json({ message: 'Invalid brand id.' })
+      return res.status(400).json({ message: 'Identifiant de marque invalide.' })
     }
 
     const existingBrand = await getBrandById(id)
 
     if (!existingBrand) {
-      return res.status(404).json({ message: 'Brand not found.' })
+      return res.status(404).json({ message: 'Marque introuvable.' })
     }
 
     const data = sanitizeName(req.body)
 
     if (!data.name) {
-      return res.status(400).json({ message: 'Brand name is required.' })
+      return res.status(400).json({ message: 'Le nom de la marque est requis.' })
     }
 
     const brand = await prisma.$transaction(async (tx) => {
@@ -138,13 +138,13 @@ export async function deleteAdminBrand(req, res, next) {
     const id = getEntityId(req.params.id)
 
     if (!id) {
-      return res.status(400).json({ message: 'Invalid brand id.' })
+      return res.status(400).json({ message: 'Identifiant de marque invalide.' })
     }
 
     const existingBrand = await getBrandById(id)
 
     if (!existingBrand) {
-      return res.status(404).json({ message: 'Brand not found.' })
+      return res.status(404).json({ message: 'Marque introuvable.' })
     }
 
     const linkedProducts = await prisma.product.count({
@@ -153,7 +153,7 @@ export async function deleteAdminBrand(req, res, next) {
 
     if (linkedProducts > 0) {
       return res.status(400).json({
-        message: 'This brand is still used by products. Update those products first.',
+        message: 'Cette marque est encore utilisee par des produits. Modifiez d\'abord ces produits.',
       })
     }
 

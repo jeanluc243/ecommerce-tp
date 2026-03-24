@@ -14,18 +14,18 @@ export function CartPanel() {
       <CardHeader>
         <div className="flex items-center justify-between gap-3">
           <div>
-            <CardTitle>Cart</CardTitle>
-            <CardDescription>Review your items before checkout.</CardDescription>
+            <CardTitle>Panier</CardTitle>
+            <CardDescription>Verifiez vos articles avant de passer a la caisse.</CardDescription>
           </div>
           <Badge variant="outline" className="rounded-full px-3 py-1.5">
-            {itemCount} items
+            {itemCount} article{itemCount > 1 ? 's' : ''}
           </Badge>
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
         {items.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-zinc-200 bg-zinc-50 p-5 text-sm text-zinc-500">
-            Your cart is empty.
+            Votre panier est vide.
           </div>
         ) : (
           items.map((item) => (
@@ -40,7 +40,7 @@ export function CartPanel() {
                   onClick={() => removeItem(item.product.id)}
                   className="text-sm text-zinc-400 transition hover:text-zinc-950"
                 >
-                  Remove
+                  Retirer
                 </button>
               </div>
               <div className="flex items-center justify-between gap-3">
@@ -66,7 +66,7 @@ export function CartPanel() {
           </div>
           <Link to="/checkout" className="mt-4 block">
             <Button className="w-full bg-white text-zinc-950 hover:bg-zinc-100" disabled={!items.length}>
-              Buy at the end
+              Passer la commande
             </Button>
           </Link>
         </div>

@@ -63,7 +63,7 @@ export async function createAdminCategory(req, res, next) {
     const data = sanitizeName(req.body)
 
     if (!data.name) {
-      return res.status(400).json({ message: 'Category name is required.' })
+      return res.status(400).json({ message: 'Le nom de la categorie est requis.' })
     }
 
     const category = await createCategory(data)
@@ -82,19 +82,19 @@ export async function updateAdminCategory(req, res, next) {
     const id = getEntityId(req.params.id)
 
     if (!id) {
-      return res.status(400).json({ message: 'Invalid category id.' })
+      return res.status(400).json({ message: 'Identifiant de categorie invalide.' })
     }
 
     const existingCategory = await getCategoryById(id)
 
     if (!existingCategory) {
-      return res.status(404).json({ message: 'Category not found.' })
+      return res.status(404).json({ message: 'Categorie introuvable.' })
     }
 
     const data = sanitizeName(req.body)
 
     if (!data.name) {
-      return res.status(400).json({ message: 'Category name is required.' })
+      return res.status(400).json({ message: 'Le nom de la categorie est requis.' })
     }
 
     const category = await prisma.$transaction(async (tx) => {
@@ -138,13 +138,13 @@ export async function deleteAdminCategory(req, res, next) {
     const id = getEntityId(req.params.id)
 
     if (!id) {
-      return res.status(400).json({ message: 'Invalid category id.' })
+      return res.status(400).json({ message: 'Identifiant de categorie invalide.' })
     }
 
     const existingCategory = await getCategoryById(id)
 
     if (!existingCategory) {
-      return res.status(404).json({ message: 'Category not found.' })
+      return res.status(404).json({ message: 'Categorie introuvable.' })
     }
 
     const linkedProducts = await prisma.product.count({
@@ -153,7 +153,7 @@ export async function deleteAdminCategory(req, res, next) {
 
     if (linkedProducts > 0) {
       return res.status(400).json({
-        message: 'This category is still used by products. Update those products first.',
+        message: 'Cette categorie est encore utilisee par des produits. Modifiez d\'abord ces produits.',
       })
     }
 

@@ -11,7 +11,7 @@ export const placeholderGradients = [
 ]
 
 export function formatPrice(price) {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('fr-FR', {
     style: 'currency',
     currency: 'USD',
   }).format(price)

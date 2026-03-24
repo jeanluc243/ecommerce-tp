@@ -37,29 +37,29 @@ app.use((error, req, res, next) => {
     error instanceof Prisma.PrismaClientInitializationError
   ) {
     return res.status(503).json({
-      message: 'Database unavailable. Check DATABASE_URL and network access.',
+      message: 'Base de donnees indisponible. Verifiez DATABASE_URL et l\'acces reseau.',
     })
   }
 
   if (errorCode === 'P2021') {
     return res.status(500).json({
-      message: 'Database schema is out of sync. Run Prisma migrations.',
+      message: 'Le schema de la base de donnees n\'est pas synchronise. Executez les migrations Prisma.',
     })
   }
 
   if (errorCode === 'P2022') {
     return res.status(500).json({
-      message: 'Database columns are out of sync with Prisma schema. Run Prisma migrations.',
+      message: 'Les colonnes de la base de donnees ne correspondent pas au schema Prisma. Executez les migrations Prisma.',
     })
   }
 
   if (errorCode === 'P2002') {
     return res.status(409).json({
-      message: 'A record with the same unique value already exists.',
+      message: 'Un enregistrement avec la meme valeur unique existe deja.',
     })
   }
 
-  res.status(500).json({ message: 'Internal server error' })
+  res.status(500).json({ message: 'Erreur interne du serveur' })
 })
 
 export default app

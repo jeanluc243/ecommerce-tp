@@ -29,19 +29,19 @@ export function StoreProductCard({ product, index }) {
         <div className="flex items-center justify-between gap-3">
           <span className="text-xl font-semibold text-zinc-950">{formatPrice(product.price)}</span>
           <Badge className={product.inStock ? 'bg-emerald-50 text-emerald-700' : 'bg-zinc-100 text-zinc-700'}>
-            {product.inStock ? `${product.stock} in stock` : 'Out of stock'}
+            {product.inStock ? `${product.stock} en stock` : 'Rupture de stock'}
           </Badge>
         </div>
         <div className="grid gap-2 md:grid-cols-2">
           <Link to={`/products/${product.id}`}>
-            <Button variant="outline" className="w-full">View</Button>
+            <Button variant="outline" className="w-full">Voir</Button>
           </Link>
           <Button
             className="w-full"
             onClick={() => addItem(product, 1)}
             disabled={!product.inStock}
           >
-            Add to cart
+            Ajouter au panier
           </Button>
         </div>
       </div>

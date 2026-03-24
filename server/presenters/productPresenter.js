@@ -42,7 +42,7 @@ function normalizeProductMedia(product) {
     return [
       {
         id: `product-${product.id}-legacy-image`,
-        name: `${product.name} cover`,
+        name: `${product.name} couverture`,
         mimeType: 'image/*',
         src: product.imageUrl,
       },
@@ -58,12 +58,12 @@ export function presentProduct(product) {
   return {
     id: product.id,
     name: product.name,
-    description: product.description ?? 'Description of this product.',
+    description: product.description ?? 'Description de ce produit.',
     price: formatCurrencyValue(product.price),
     imageUrl: media[0]?.src ?? product.imageUrl,
     media,
-    category: product.category ?? 'Electronics',
-    brand: product.brand ?? 'Store',
+    category: product.category ?? 'Electronique',
+    brand: product.brand ?? 'Boutique',
     stock: product.stock,
     inStock: product.stock > 0,
     createdAt: product.createdAt,

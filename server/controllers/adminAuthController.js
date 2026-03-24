@@ -15,15 +15,15 @@ export async function loginAdmin(req, res) {
   const { phone, password } = sanitizeCredentials(req.body)
 
   if (!isAdminAuthConfigured()) {
-    return res.status(500).json({ message: 'Admin authentication is not configured.' })
+    return res.status(500).json({ message: 'L\'authentification administrateur n\'est pas configuree.' })
   }
 
   if (!phone || !password) {
-    return res.status(400).json({ message: 'Phone number and password are required.' })
+    return res.status(400).json({ message: 'Le numero de telephone et le mot de passe sont requis.' })
   }
 
   if (!verifyAdminCredentials(phone, password)) {
-    return res.status(401).json({ message: 'Invalid phone number or password.' })
+    return res.status(401).json({ message: 'Numero de telephone ou mot de passe invalide.' })
   }
 
   return res.json({

@@ -48,7 +48,7 @@ export function TaxonomyManager({
   }
 
   async function handleDelete(item) {
-    const shouldDelete = window.confirm(`Delete "${item.name}"?`)
+    const shouldDelete = window.confirm(`Supprimer "${item.name}" ?`)
     if (!shouldDelete) return
 
     const result = await onDelete(item.id)
@@ -69,7 +69,7 @@ export function TaxonomyManager({
         <CardContent className="space-y-4">
           {items.length === 0 ? (
             <div className="rounded-[1.35rem] border border-dashed border-zinc-300 bg-zinc-50 px-5 py-10 text-center text-sm text-zinc-500">
-              No {itemLabel} yet.
+              Aucun element pour le moment.
             </div>
           ) : (
             <div className="grid gap-3 md:grid-cols-2">
@@ -84,7 +84,7 @@ export function TaxonomyManager({
                     <div>
                       <h3 className="text-lg font-semibold">{item.name}</h3>
                       <p className={`mt-2 text-sm ${selectedItem?.id === item.id ? 'text-zinc-300' : 'text-zinc-500'}`}>
-                        {item.productCount} linked product{item.productCount > 1 ? 's' : ''}
+                        {item.productCount} produit{item.productCount > 1 ? 's' : ''} lie{item.productCount > 1 ? 's' : ''}
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
@@ -119,12 +119,12 @@ export function TaxonomyManager({
       <Card className="rounded-[1.75rem] border-zinc-200/80 bg-white/95">
         <CardHeader>
           <CardTitle className="text-xl tracking-[-0.03em]">
-            {selectedItem ? `Edit ${itemLabel}` : `Add ${itemLabel}`}
+            {selectedItem ? `Modifier ${itemLabel}` : `Ajouter ${itemLabel}`}
           </CardTitle>
           <CardDescription>
             {selectedItem
-              ? `Rename the selected ${itemLabel}.`
-              : `Create a new ${itemLabel} available in the product form.`}
+              ? `Renommez le ${itemLabel} selectionne.`
+              : `Creez un nouveau ${itemLabel} disponible dans le formulaire produit.`}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -132,7 +132,7 @@ export function TaxonomyManager({
             <Input
               value={name}
               onChange={(event) => setName(event.target.value)}
-              placeholder={`${itemLabel} name`}
+              placeholder={`Nom du ${itemLabel}`}
               required
             />
             {error ? (
@@ -142,11 +142,11 @@ export function TaxonomyManager({
             ) : null}
             <div className="grid gap-2 md:grid-cols-2">
               <Button type="submit" disabled={isSaving}>
-                {isSaving ? 'Saving...' : selectedItem ? 'Update' : 'Create'}
+                {isSaving ? 'Enregistrement...' : selectedItem ? 'Mettre a jour' : 'Creer'}
               </Button>
               {selectedItem ? (
                 <Button type="button" variant="outline" onClick={handleCancel}>
-                  Cancel
+                  Annuler
                 </Button>
               ) : null}
             </div>

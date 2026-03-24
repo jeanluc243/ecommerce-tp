@@ -14,28 +14,28 @@ export function StoreShell({ search, onSearchChange, children, aside }) {
         <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-6 px-6 py-4 lg:px-10">
           <div className="flex items-center gap-8">
             <Link to="/" className="text-lg font-bold tracking-[-0.04em]">
-              Store
+              Boutique
             </Link>
             <StoreNav />
             <div className="relative hidden md:block">
               <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-zinc-400" />
-              <Input
-                value={search}
-                onChange={(event) => onSearchChange(event.target.value)}
-                placeholder="Search products..."
-                className="w-72 rounded-xl bg-zinc-50 pl-9"
-              />
+                <Input
+                  value={search}
+                  onChange={(event) => onSearchChange(event.target.value)}
+                  placeholder="Rechercher des produits..."
+                  className="w-72 rounded-xl bg-zinc-50 pl-9"
+                />
             </div>
           </div>
           <div className="flex items-center gap-2">
             <Link to="/checkout">
               <Button variant="outline" className="rounded-xl">
                 <ShoppingBag className="size-4" />
-                Cart ({itemCount})
+                Panier ({itemCount})
               </Button>
             </Link>
             <Link to="/admin">
-              <Button className="rounded-xl px-5">Admin</Button>
+              <Button className="rounded-xl px-5">Administration</Button>
             </Link>
           </div>
         </div>
