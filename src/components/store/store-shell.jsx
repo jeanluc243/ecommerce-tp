@@ -34,9 +34,6 @@ export function StoreShell({ search, onSearchChange, children, aside }) {
                 Panier ({itemCount})
               </Button>
             </Link>
-            <Link to="/admin">
-              <Button className="rounded-xl px-5">Administration</Button>
-            </Link>
           </div>
         </div>
       </header>
