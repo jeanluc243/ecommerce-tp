@@ -179,7 +179,7 @@ export function AdminPage() {
       <header className="sticky top-0 z-20 border-b border-zinc-200/80 bg-white/90 backdrop-blur-xl">
         <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-6 px-6 py-4 lg:px-10">
           <div className="flex items-center gap-8">
-            <Link to="/" className="text-lg font-bold tracking-[-0.04em]">Boutique</Link>
+            <Link to="/" className="text-lg font-bold tracking-[-0.04em]">Jo Store</Link>
             <StoreNav />
           </div>
           <div className="flex items-center gap-2">

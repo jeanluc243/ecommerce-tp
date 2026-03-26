@@ -30,7 +30,7 @@ export function StoreHomePage() {
             <Badge className="mb-4 rounded-full px-3 py-1 text-[11px] uppercase tracking-[0.28em]">
               Nouvelle collection
             </Badge>
-            <h1 className="text-4xl font-semibold tracking-[-0.06em] md:text-5xl">Boutique</h1>
+            <h1 className="text-4xl font-semibold tracking-[-0.06em] md:text-5xl">Jo Store</h1>
             <p className="mt-3 max-w-2xl text-base text-zinc-500">
               Parcourez tous les articles, ouvrez une fiche produit et ajoutez vos selections au panier avant la commande.
             </p>

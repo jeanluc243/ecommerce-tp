@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 
 const storeNavigation = [
-  { label: 'Boutique', to: '/' },
+  { label: 'Jo Store', to: '/' },
   { label: 'Produits', to: '/products' },
   { label: 'Categories', to: '/categories' },
   { label: 'Marques', to: '/brands' },
@@ -25,7 +25,7 @@ export function StoreNav() {
             to={item.to}
             className={cn(
               'rounded-full px-3 py-2 text-sm font-medium text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-950',
-              isActive && 'bg-zinc-950 text-white hover:bg-zinc-900 hover:text-white',
+              isActive && 'bg-primary text-primary-foreground hover:bg-[var(--color-primary-strong)] hover:text-primary-foreground',
             )}
           >
             {item.label}

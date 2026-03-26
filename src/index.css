@@ -3,6 +3,10 @@
 @theme {
   --font-sans: "Manrope", "Segoe UI", sans-serif;
   --font-display: "Manrope", "Segoe UI", sans-serif;
+  --color-primary: #f97316;
+  --color-primary-foreground: #fff7ed;
+  --color-primary-soft: #ffedd5;
+  --color-primary-strong: #ea580c;
 }
 
 :root {

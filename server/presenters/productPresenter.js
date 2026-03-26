@@ -63,7 +63,7 @@ export function presentProduct(product) {
     imageUrl: media[0]?.src ?? product.imageUrl,
     media,
     category: product.category ?? 'Electronique',
-    brand: product.brand ?? 'Boutique',
+    brand: product.brand ?? 'Jo Store',
     stock: product.stock,
     inStock: product.stock > 0,
     createdAt: product.createdAt,

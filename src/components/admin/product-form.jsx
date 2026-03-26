@@ -227,7 +227,7 @@ export function ProductForm({
               onDrop={handleDrop}
               className={`flex min-h-36 w-full flex-col items-center justify-center rounded-[1.5rem] border border-dashed px-5 py-6 text-center transition ${
                 isDropzoneActive
-                  ? 'border-zinc-900 bg-zinc-950 text-white'
+                  ? 'border-[var(--color-primary-strong)] bg-primary text-primary-foreground'
                   : 'border-zinc-300 bg-zinc-50 text-zinc-700'
               }`}
             >
@@ -235,7 +235,7 @@ export function ProductForm({
               <span className="text-sm font-semibold">
                 {remainingSlots > 0 ? 'Deposer des images ou cliquer pour televerser' : 'La galerie est pleine'}
               </span>
-              <span className={`mt-1 text-xs ${isDropzoneActive ? 'text-zinc-300' : 'text-zinc-500'}`}>
+              <span className={`mt-1 text-xs ${isDropzoneActive ? 'text-orange-100' : 'text-zinc-500'}`}>
                 {remainingSlots > 0
                   ? `${remainingSlots} emplacement${remainingSlots > 1 ? 's' : ''} restant${remainingSlots > 1 ? 's' : ''}`
                   : 'Retirez une image pour en ajouter une nouvelle'}

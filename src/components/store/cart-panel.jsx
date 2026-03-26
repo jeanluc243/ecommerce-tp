@@ -59,13 +59,13 @@ export function CartPanel() {
             </div>
           ))
         )}
-        <div className="rounded-2xl bg-zinc-950 p-5 text-white">
-          <div className="flex items-center justify-between gap-3 text-sm text-zinc-300">
+        <div className="rounded-2xl bg-primary p-5 text-primary-foreground">
+          <div className="flex items-center justify-between gap-3 text-sm text-orange-100">
             <span>Total</span>
-            <span className="text-xl font-semibold text-white">{formatPrice(totalAmount)}</span>
+            <span className="text-xl font-semibold text-primary-foreground">{formatPrice(totalAmount)}</span>
           </div>
           <Link to="/checkout" className="mt-4 block">
-            <Button className="w-full bg-white text-zinc-950 hover:bg-zinc-100" disabled={!items.length}>
+            <Button className="w-full bg-white text-orange-700 hover:bg-orange-50" disabled={!items.length}>
               Passer la commande
             </Button>
           </Link>

@@ -77,13 +77,13 @@ export function TaxonomyManager({
                 <div
                   key={item.id}
                   className={`rounded-[1.35rem] border p-4 transition ${
-                    selectedItem?.id === item.id ? 'border-zinc-950 bg-zinc-950 text-white' : 'border-zinc-200 bg-white'
+                    selectedItem?.id === item.id ? 'border-[var(--color-primary-strong)] bg-primary text-primary-foreground' : 'border-zinc-200 bg-white'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <h3 className="text-lg font-semibold">{item.name}</h3>
-                      <p className={`mt-2 text-sm ${selectedItem?.id === item.id ? 'text-zinc-300' : 'text-zinc-500'}`}>
+                      <p className={`mt-2 text-sm ${selectedItem?.id === item.id ? 'text-orange-100' : 'text-zinc-500'}`}>
                         {item.productCount} produit{item.productCount > 1 ? 's' : ''} lie{item.productCount > 1 ? 's' : ''}
                       </p>
                     </div>

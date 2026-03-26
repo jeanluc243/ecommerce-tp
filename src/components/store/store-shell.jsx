@@ -14,7 +14,7 @@ export function StoreShell({ search, onSearchChange, children, aside }) {
         <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-6 px-6 py-4 lg:px-10">
           <div className="flex items-center gap-8">
             <Link to="/" className="text-lg font-bold tracking-[-0.04em]">
-              Boutique
+              Jo Store
             </Link>
             <StoreNav />
             <div className="relative hidden md:block">

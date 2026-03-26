@@ -115,10 +115,10 @@ export function CheckoutPage() {
                 </div>
               ))
             )}
-            <div className="rounded-2xl bg-zinc-950 p-5 text-white">
-              <div className="flex items-center justify-between text-sm text-zinc-300">
+            <div className="rounded-2xl bg-primary p-5 text-primary-foreground">
+              <div className="flex items-center justify-between text-sm text-orange-100">
                 <span>Montant total</span>
-                <span className="text-xl font-semibold text-white">{formatPrice(totalAmount)}</span>
+                <span className="text-xl font-semibold text-primary-foreground">{formatPrice(totalAmount)}</span>
               </div>
             </div>
           </CardContent>
