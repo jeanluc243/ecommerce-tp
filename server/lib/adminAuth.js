@@ -12,6 +12,25 @@ function getAdminConfig() {
   }
 }
 
+export function getMissingAdminAuthEnvVars() {
+  const config = getAdminConfig()
+  const missingVars = []
+
+  if (!config.phone) {
+    missingVars.push('ADMIN_PHONE')
+  }
+
+  if (!config.password) {
+    missingVars.push('ADMIN_PASSWORD')
+  }
+
+  if (!config.secret) {
+    missingVars.push('ADMIN_TOKEN_SECRET')
+  }
+
+  return missingVars
+}
+
 function encodeTokenPayload(payload) {
   return Buffer.from(JSON.stringify(payload)).toString('base64url')
 }
@@ -28,8 +47,7 @@ function signPayload(encodedPayload, secret) {
 }
 
 export function isAdminAuthConfigured() {
-  const config = getAdminConfig()
-  return Boolean(config.phone && config.password && config.secret)
+  return getMissingAdminAuthEnvVars().length === 0
 }
 
 export function verifyAdminCredentials(phone, password) {

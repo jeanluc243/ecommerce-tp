@@ -1,11 +1,15 @@
 import {
+  getMissingAdminAuthEnvVars,
   isAdminAuthConfigured,
   verifyAdminToken,
 } from '../lib/adminAuth.js'
 
 export function requireAdminAuth(req, res, next) {
   if (!isAdminAuthConfigured()) {
-    return res.status(500).json({ message: 'L\'authentification administrateur n\'est pas configuree.' })
+    const missingVars = getMissingAdminAuthEnvVars()
+    return res.status(500).json({
+      message: `L'authentification administrateur n'est pas configuree. Variables manquantes: ${missingVars.join(', ')}`,
+    })
   }
 
   const authorization = req.headers.authorization ?? ''

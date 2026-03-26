@@ -27,13 +27,13 @@ Le projet est configuré pour un seul deploy Vercel avec :
 - le frontend servi depuis `dist`
 - l'API Express exposée via `api/index.js`
 - le même domaine pour le front et le back via `/api/*`
-- une seule variable critique côté serveur : `DATABASE_URL`
+- des variables serveur pour la base et l'auth admin
 
 ### Étapes
 
 1. Pousser le projet sur GitHub.
 2. Importer le repo dans Vercel.
-3. Dans `Settings > Environment Variables`, ajouter `DATABASE_URL`.
+3. Dans `Settings > Environment Variables`, ajouter `DATABASE_URL`, `ADMIN_PHONE`, `ADMIN_PASSWORD` et `ADMIN_TOKEN_SECRET`.
 4. Ne pas renseigner `VITE_API_URL` en production si tu veux garder les appels en relatif sur `/api`.
 5. Déployer.
 6. Appliquer les migrations Prisma sur la base PostgreSQL avant le premier usage réel.
@@ -47,6 +47,9 @@ Le projet est configuré pour un seul deploy Vercel avec :
 ### Variables d'environnement
 
 - `DATABASE_URL` : URL PostgreSQL utilisée par Prisma
+- `ADMIN_PHONE` : numéro de téléphone autorisé à se connecter à `/admin`
+- `ADMIN_PASSWORD` : mot de passe administrateur
+- `ADMIN_TOKEN_SECRET` : secret utilisé pour signer le token admin
 - `VITE_API_URL` : optionnelle. En production sur Vercel, laisse-la vide pour utiliser `/api`.
 
 ### Prisma

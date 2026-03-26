@@ -1,5 +1,6 @@
 import {
   createAdminToken,
+  getMissingAdminAuthEnvVars,
   isAdminAuthConfigured,
   verifyAdminCredentials,
 } from '../lib/adminAuth.js'
@@ -15,7 +16,10 @@ export async function loginAdmin(req, res) {
   const { phone, password } = sanitizeCredentials(req.body)
 
   if (!isAdminAuthConfigured()) {
-    return res.status(500).json({ message: 'L\'authentification administrateur n\'est pas configuree.' })
+    const missingVars = getMissingAdminAuthEnvVars()
+    return res.status(500).json({
+      message: `L'authentification administrateur n'est pas configuree. Variables manquantes: ${missingVars.join(', ')}`,
+    })
   }
 
   if (!phone || !password) {
